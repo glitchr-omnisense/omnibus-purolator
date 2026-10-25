@@ -122,6 +122,9 @@ the first document's URL is the label's `url`. No document comes inline: `conten
 response without a PIN is a `CarrierException` (`Purolator booked no shipment.`). `pickupPoint` is
 not sent.
 
+> [!WARNING]
+> Known defect: the document type is always `DomesticBillOfLadingThermal`, PDF output and international shipments included, where it should follow the output and the destination.
+
 **Track.** `TrackPackagesByPin` in French when the locale starts with `fr`, else English. The first
 package's scans: date and time (PHP's default time zone), description, the depot's name as
 location, the scan type as `code`; sorted oldest first. The status is the latest scan's, mapped
