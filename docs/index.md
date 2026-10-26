@@ -1,6 +1,6 @@
 # omnibus/purolator
 
-Purolator for [omniscient/omnibus](https://github.com/glitchr-studio/omnibus): estimates,
+Purolator for [omnisense/omnibus](https://github.com/glitchr-omnisense/omnibus): estimates,
 shipments with their documents, tracking, locations and voids, through Purolator's E-Ship web
 services (SOAP 1.2, HTTP basic authentication with the API key). The envelopes are written and read
 as XML over plain HTTP (`ext-soap` is not needed). The gateway calls:
@@ -26,7 +26,7 @@ service's version, the language, the group id `omnibus` and a random request ref
 composer require omnibus/purolator
 ```
 
-Requires PHP 8.2, `omniscient/omnibus` (2.x) and `symfony/http-client` (6.4, 7 or 8); given no
+Requires PHP 8.2, `omnisense/omnibus` (2.x) and `symfony/http-client` (6.4, 7 or 8); given no
 HTTP client, the factory makes one with `HttpClient::create()`. In a Symfony application with
 `Omnibus\Bridge\Symfony\OmnibusBundle`, the factory is registered as soon as the package is
 installed.
@@ -46,7 +46,7 @@ installed.
 | `password` | string | - | yes | its password |
 | `account_number` | string | - | yes | the registered and billing account |
 | `sandbox` | bool | `false` | no | `true`: the development web services |
-| `rates` | list | - | no | prices from configuration instead of Estimating ([the rates option](https://github.com/glitchr-studio/omnibus/blob/2.x/docs/configuration.md#the-rates-option)): with it, Estimating is not called |
+| `rates` | list | - | no | prices from configuration instead of Estimating ([the rates option](https://github.com/glitchr-omnisense/omnibus/blob/2.x/docs/configuration.md#the-rates-option)): with it, Estimating is not called |
 
 Shipment options (`Shipment::$options`):
 

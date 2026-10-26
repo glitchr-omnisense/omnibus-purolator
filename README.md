@@ -1,6 +1,6 @@
 # omnibus/purolator
 
-Purolator for [omniscient/omnibus](https://github.com/glitchr-studio/omnibus): estimates, shipments
+Purolator for [omnisense/omnibus](https://github.com/glitchr-omnisense/omnibus): estimates, shipments
 with their documents, tracking, locations and voids - the E-Ship web services (SOAP 1.2, basic
 auth with the API key).
 
@@ -8,7 +8,7 @@ auth with the API key).
 $gateway = (new PurolatorGatewayFactory($http))->create($options);   // $http: the application's HTTP client - none given, the factory makes its own; the options below
 ```
 
-No framework needed: the package requires `omniscient/omnibus` and `symfony/http-client`. In a
+No framework needed: the package requires `omnisense/omnibus` and `symfony/http-client`. In a
 Symfony application, the same through the bundle's configuration:
 
 ```yaml
