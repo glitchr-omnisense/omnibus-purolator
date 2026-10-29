@@ -114,16 +114,13 @@ cheapest first; `toPickupPoint` is `false`.
 
 **Ship.** `CreateShipment` with printer type `Thermal` for `ZPL`, else `Regular`. The tracking
 number is the `ShipmentPIN`. Then `GetDocuments`, synchronous, output `ZPL` or `PDF`, for the
-document type `DomesticBillOfLadingThermal` (asked for whatever the format and the destination):
-the first document's URL is the label's `url`. No document comes inline: `content` is `null`. When
-`GetDocuments` fails, the booking still succeeds without a URL (a comment in `ShippingAction` says
-`GetSlip` asks again; `GetSlip` is not supported). The format is `application/zpl` or
+document type `DomesticBillOfLading` within Canada and `InternationalBillOfLading` to the United
+States and abroad, with its `Thermal` variant for `ZPL`: the first document's URL is the label's
+`url`. No document comes inline: `content` is `null`. When `GetDocuments` fails, the booking still
+succeeds without a URL (`GetSlip` is not supported). The format is `application/zpl` or
 `application/pdf`; `trackingUrl` is `https://www.purolator.com/en/shipping/tracker?pin=<pin>`. A
 response without a PIN is a `CarrierException` (`Purolator booked no shipment.`). `pickupPoint` is
 not sent.
-
-> [!WARNING]
-> Known defect: the document type is always `DomesticBillOfLadingThermal`, PDF output and international shipments included, where it should follow the output and the destination.
 
 **Track.** `TrackPackagesByPin` in French when the locale starts with `fr`, else English. The first
 package's scans: date and time (PHP's default time zone), description, the depot's name as
@@ -240,8 +237,8 @@ example above was run in the core's harness on those recorded answers.
 
 Not verified: the README says the package is built from Purolator's published API documentation
 and was not yet run against the development environment; that needs the credentials above. The
-document type asked for (`DomesticBillOfLadingThermal`, for every shipment) and the format of the
-Locator's opening times are unchecked against real answers.
+document types asked for (by destination and output) and the format of the Locator's opening
+times are unchecked against real answers.
 
 ## Responsibility
 

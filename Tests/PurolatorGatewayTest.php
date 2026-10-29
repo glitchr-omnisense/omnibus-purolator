@@ -64,6 +64,24 @@ final class PurolatorGatewayTest extends TestCase
         self::assertStringContainsString('ShippingDocuments', $this->calls[1][0]);
     }
 
+    /**
+     * E-Ship's Shipping Documents service: DomesticBillOfLading within Canada,
+     * InternationalBillOfLading to the United States and abroad, the Thermal variants for a
+     * thermal (ZPL) printer.
+     */
+    public function testTheDocumentTypeFollowsTheOutputAndTheDestination(): void
+    {
+        $s = self::shipment();
+        $this->gateway()->ship($s);
+        self::assertStringContainsString('<v2:DocumentType>DomesticBillOfLading</v2:DocumentType>', $this->calls[1][1]);
+        $this->calls = [];
+        $this->gateway()->ship(new Shipment($s->sender, $s->recipient, $s->parcels, reference: 'ORDER-1042', options: $s->options + ['label_format' => 'ZPL']));
+        self::assertStringContainsString('<v2:DocumentType>DomesticBillOfLadingThermal</v2:DocumentType>', $this->calls[1][1]);
+        $this->calls = [];
+        $this->gateway()->ship(new Shipment($s->sender, new Address('Alex Martin', ['350 5th Ave'], '10118', 'New York', 'US', phone: '2125550000'), $s->parcels, reference: 'ORDER-1042', options: ['sender_province' => 'QC', 'recipient_province' => 'NY']));
+        self::assertStringContainsString('<v2:DocumentType>InternationalBillOfLading</v2:DocumentType>', $this->calls[1][1]);
+    }
+
     public function testTrackingLocationsAndVoid(): void
     {
         $gateway = $this->gateway();
