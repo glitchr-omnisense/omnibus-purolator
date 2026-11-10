@@ -1,0 +1,85 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Parameter \#1 \$array \(array\{0\?\: non\-falsy\-string\}\) of array_values is already a list, call has no effect\.$#'
+			identifier: arrayValues.list
+			count: 1
+			path: Action/PickupAction.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: Action/ShippingAction.php
+
+		-
+			message: '#^Method Omnibus\\Purolator\\Api\:\:secrets\(\) should return list\<string\> but returns non\-empty\-array\<int\<0, max\>\|string, string\>\.$#'
+			identifier: return.type
+			count: 1
+			path: Api.php
+
+		-
+			message: '#^Parameter \#1 \$data of function simplexml_load_string expects string, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Api.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 2
+			path: Mapping.php
+
+		-
+			message: '#^Parameter \#2 \$province of static method Omnibus\\Purolator\\Mapping\:\:address\(\) expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 3
+			path: Mapping.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 3
+			path: PurolatorGatewayFactory.php
+
+		-
+			message: '#^Cannot access offset 0 on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: Tests/PurolatorGatewayTest.php
+
+		-
+			message: '#^Cannot access offset 1 on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 7
+			path: Tests/PurolatorGatewayTest.php
+
+		-
+			message: '#^Cannot access property \$location on Omnibus\\Model\\TrackingEvent\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: Tests/PurolatorGatewayTest.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: Tests/PurolatorGatewayTest.php
+
+		-
+			message: '#^Offset 1 does not exist on array\{\}\.$#'
+			identifier: offsetAccess.notFound
+			count: 2
+			path: Tests/PurolatorGatewayTest.php
+
+		-
+			message: '#^Parameter \#2 \$haystack of static method PHPUnit\\Framework\\Assert\:\:assertStringContainsString\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 9
+			path: Tests/PurolatorGatewayTest.php
+
+		-
+			message: '#^Property Omnibus\\Purolator\\Tests\\PurolatorGatewayTest\:\:\$calls type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Tests/PurolatorGatewayTest.php

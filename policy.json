@@ -1,0 +1,38 @@
+{
+    "$schema": "https://github.com/glitchr-omnisense/contracts/blob/1.x/resources/usage-policy.schema.json",
+    "provider": "purolator",
+    "rateLimits": null,
+    "concurrency": null,
+    "rights": {
+        "commercial": "contract",
+        "openSourceRequired": false,
+        "caching": {
+            "permission": "unknown",
+            "maxTtl": null
+        },
+        "storage": "unknown",
+        "redistribution": "contract",
+        "attribution": {
+            "required": false,
+            "text": null,
+            "url": null,
+            "where": []
+        },
+        "licence": null
+    },
+    "requirements": {
+        "key": true,
+        "userAgent": {
+            "required": false,
+            "pattern": null
+        }
+    },
+    "provenance": {
+        "terms": null,
+        "policy": null,
+        "verifiedAt": null,
+        "declaredBy": "maintainer",
+        "contact": "https://www.purolator.com/en/services/technology-solutions/e-ship-web-services",
+        "notes": "Not read on 2026-11-10: Purolator's E-Ship pages and the Resource Centre agreement answered 403. Access through a development key, then a production key activated by Purolator for the account holder. No idempotency read: a shipment is sent once."
+    }
+}

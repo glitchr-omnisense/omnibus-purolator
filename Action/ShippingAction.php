@@ -6,6 +6,7 @@ use Omnibus\Action\ActionInterface;
 use Omnibus\Action\ApiAwareInterface;
 use Omnibus\Action\ApiAwareTrait;
 use Omnibus\Exception\CarrierException;
+use Omnibus\Exception\UsageLimitReachedException;
 use Omnibus\Model\Label;
 use Omnibus\Purolator\Api;
 use Omnibus\Purolator\Mapping;
@@ -45,7 +46,7 @@ final class ShippingAction implements ActionInterface, ApiAwareInterface
         try {
             $documents = $this->api->call(Api::SHIPPING_DOCUMENTS, 'GetDocumentsRequest', '<v2:OutputType>'.($thermal ? 'ZPL' : 'PDF').'</v2:OutputType><v2:Synchronous>true</v2:Synchronous><v2:DocumentCriterium><v2:DocumentCriteria><v2:PIN><v2:Value>'.Api::e($pin).'</v2:Value></v2:PIN><v2:DocumentTypes><v2:DocumentType>'.$type.'</v2:DocumentType></v2:DocumentTypes></v2:DocumentCriteria></v2:DocumentCriterium>');
             $url = (string) ($documents->Documents->Document[0]->DocumentDetails->DocumentDetail[0]->URL ?? '') ?: null;
-        } catch (CarrierException) {
+        } catch (CarrierException|UsageLimitReachedException) {
             // The documents follow a moment later: the booking stands without a URL (GetSlip is not offered).
         }
         $request->setResult(new Label('purolator', $pin, null, $thermal ? Label::ZPL : Label::PDF, $url, 'https://www.purolator.com/en/shipping/tracker?pin='.rawurlencode($pin)));

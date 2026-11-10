@@ -4,6 +4,8 @@ namespace Omnibus\Purolator;
 
 use Omnibus\Exception\CarrierException;
 use Omnibus\Http\Redaction;
+use Omnibus\Http\Throttle;
+use Omnisense\Contracts\Policy\Backoff;
 use Symfony\Contracts\HttpClient\Exception\ExceptionInterface as HttpExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -31,6 +33,8 @@ final class Api
         public readonly string $accountNumber,
         public readonly bool $sandbox = false,
         private readonly int $timeout = 20,
+        /** The waits the carrier asks for (omnisense/contracts' Backoff): no call while one lasts, a 429 a RateLimitedException, never retried */
+        private readonly ?Backoff $backoff = null,
     ) {
     }
 
@@ -46,6 +50,7 @@ final class Api
             .'<soap:Header><v2:RequestContext><v2:Version>'.$version.'</v2:Version><v2:Language>'.$language.'</v2:Language><v2:GroupID>omnibus</v2:GroupID><v2:RequestReference>'.bin2hex(random_bytes(6)).'</v2:RequestReference></v2:RequestContext></soap:Header>'
             .'<soap:Body><v2:'.$request.'>'.$body.'</v2:'.$request.'></soap:Body></soap:Envelope>';
         try {
+            Throttle::before($this->backoff);
             $response = $this->http->request('POST', ($this->sandbox ? self::TEST : self::LIVE).'/'.$path, [
                 'auth_basic' => [$this->key, $this->password],
                 'headers' => ['Content-Type' => 'application/soap+xml; charset=utf-8', 'SOAPAction' => 'http://purolator.com/pws/service/v2/'.$request],
@@ -53,6 +58,7 @@ final class Api
                 'timeout' => $this->timeout,
             ]);
             $status = $response->getStatusCode();
+            Throttle::after($this->backoff, 'purolator', $status, $response->getHeaders(false));
             $content = $response->getContent(false);
         } catch (HttpExceptionInterface $e) {
             $secrets = $this->secrets();
