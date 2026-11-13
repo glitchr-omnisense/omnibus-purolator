@@ -4,6 +4,42 @@ Purolator for [omnisense/omnibus](https://github.com/glitchr-omnisense/omnibus):
 with their documents, tracking, locations and voids - the E-Ship web services (SOAP 1.2, basic
 auth with the API key).
 
+## Install and a first call
+
+```sh
+composer require omnibus/purolator
+```
+
+No account for this first call: Purolator's answer is recorded (`Omnibus\Testing\RecordedHttpClient`
+answers in place of the API), so nothing leaves the process. With your own credentials, give the
+factory your HTTP client (or none: it makes its own) and drop the recorded one.
+
+```php
+<?php
+
+require __DIR__.'/vendor/autoload.php';
+
+use Omnibus\Purolator\PurolatorGatewayFactory;
+use Omnibus\Testing\RecordedHttpClient;
+
+// Purolator's answer, recorded: no account, and nothing leaves the process.
+$http = new RecordedHttpClient([
+    'body:TrackPackagesByPinRequest' => RecordedHttpClient::answer('<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope"><s:Body><TrackPackagesByPinResponse xmlns="http://purolator.com/pws/datatypes/v2">'
+        .'<ResponseInformation><Errors/></ResponseInformation><TrackingInformationList><TrackingInformation><PIN><Value>329014521622</Value></PIN><Scans><Scan><ScanType>Delivery</ScanType>'
+        .'<Depot><Name>TORONTO</Name></Depot><ScanDate>2026-10-02</ScanDate><ScanTime>101500</ScanTime><Description>Shipment delivered to RECEPTION</Description></Scan></Scans>'
+        .'</TrackingInformation></TrackingInformationList></TrackPackagesByPinResponse></s:Body></s:Envelope>', 200, ['content-type' => 'application/soap+xml']),
+]);
+$gateway = (new PurolatorGatewayFactory($http))->create(['key' => 'devkey', 'password' => 'pass', 'account_number' => '9999999999', 'sandbox' => true]);
+
+$tracking = $gateway->track('329014521622');
+echo $tracking->status->value, ' - ', $tracking->latest()?->description, "\n";   // delivered - Shipment delivered to RECEPTION
+```
+
+A real call needs a Purolator account (the credentials below). The answer is shaped after
+Purolator's published documentation; the package has not been run against its service yet.
+
+## Configuration
+
 ```php
 $gateway = (new PurolatorGatewayFactory($http))->create($options);   // $http: the application's HTTP client - none given, the factory makes its own; the options below
 ```
